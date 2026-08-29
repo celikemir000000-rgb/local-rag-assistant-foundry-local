@@ -179,3 +179,7 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Microsoft Foundry Local model files are downloaded per machine.
+# They are several gigabytes and must not be committed to GitHub.
+model_cache/
