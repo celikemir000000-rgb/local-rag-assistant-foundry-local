@@ -36,7 +36,7 @@ PDF Documents
 - evaluate_retrieval.py - Tests retrieval performance.
 - evaluate_rag.py - Runs end-to-end evaluation.
 - evaluation_questions.json - Contains evaluation questions.
-- evaluation_results.csv - Stores evaluation results.
+- evaluation_results_formatted.xlsx - Stores the formatted evaluation results.
 - performance_test.py - Measures RAG execution times.
 
 ## Installation
@@ -116,19 +116,14 @@ These results apply only to the prepared evaluation dataset.
 
 ## Performance
 
-The embedding model and answer model are loaded once when the application starts and remain in memory while the application is running.
+The embedding model and selected answer model are loaded once when the
+application starts and remain in memory while the application is running. This
+avoids loading and unloading the models for every question.
 
-This avoids loading and unloading the models for every question.
-
-Example measurements on the test machine:
-
-- Application startup: approximately 13.1 seconds
-- Query embedding: approximately 2.6 seconds
-- Retrieval search: approximately 0.012 seconds
-- Qwen3-4B answer generation: approximately 45-51 seconds
-- Total question time after startup: approximately 47-53 seconds
-
-Retrieval itself is very fast. The main performance bottleneck is local Qwen3-4B answer generation using CPUExecutionProvider.
+- Fast mode uses Qwen2.5 0.5B for shorter response times.
+- Quality mode uses Qwen3 4B for more capable answers and may take longer.
+- Actual performance depends on the computer and the available execution provider.
+- The web interface intentionally does not display elapsed response time.
 
 ## Privacy
 
