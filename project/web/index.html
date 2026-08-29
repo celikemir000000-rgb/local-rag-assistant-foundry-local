@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A private, offline RAG assistant powered by Microsoft Foundry Local."
+    />
+    <title>Local RAG Assistant</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#question-input">Skip to question</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="Local RAG Assistant">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M8 7.5h10.5L24 13v11.5H8z" />
+              <path d="M18.5 7.5V13H24M12 17h8M12 21h5" />
+            </svg>
+          </div>
+          <div>
+            <p class="eyebrow">Microsoft Foundry Local</p>
+            <h1>Local RAG</h1>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="status-pill is-loading" id="status-pill" role="status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="status-label">Starting locally</span>
+          </div>
+          <button class="icon-button" id="theme-button" type="button" aria-label="Switch color theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" />
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" />
+            </svg>
+          </button>
+          <button class="secondary-button" id="new-chat-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            New chat
+          </button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="knowledge-panel" aria-label="Knowledge base details">
+          <section class="panel-section overview-card">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Knowledge base</p>
+                <h2>Local documents</h2>
+              </div>
+              <span class="count-badge" id="document-count">—</span>
+            </div>
+            <p class="section-description">
+              Answers are grounded only in the PDFs stored on this computer.
+            </p>
+            <div class="metric-row">
+              <div class="metric">
+                <span id="chunk-count">—</span>
+                <small>indexed chunks</small>
+              </div>
+              <div class="metric">
+                <span>Top 3</span>
+                <small>retrieval</small>
+              </div>
+              <div class="metric">
+                <span>0.35</span>
+                <small>threshold</small>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel-section document-section">
+            <div class="section-heading compact">
+              <h2>Documents</h2>
+              <span class="muted-label">PDF</span>
+            </div>
+            <div class="document-list" id="document-list" aria-live="polite">
+              <div class="document-skeleton"></div>
+              <div class="document-skeleton"></div>
+              <div class="document-skeleton short"></div>
+            </div>
+          </section>
+
+          <section class="panel-section model-section">
+            <div class="section-heading compact">
+              <h2>Local models</h2>
+            </div>
+            <div class="model-row">
+              <span class="model-icon" aria-hidden="true">E</span>
+              <div>
+                <strong>Embedding</strong>
+                <small id="embedding-model">qwen3-embedding-0.6b</small>
+              </div>
+              <span class="mini-status" id="embedding-status">Loading</span>
+            </div>
+            <div class="model-row">
+              <span class="model-icon answer" aria-hidden="true">A</span>
+              <div>
+                <strong>Fast answer</strong>
+                <small id="fast-answer-model">qwen2.5-0.5b</small>
+              </div>
+              <span class="mini-status" id="fast-answer-status">Loading</span>
+            </div>
+            <div class="model-row">
+              <span class="model-icon quality" aria-hidden="true">Q</span>
+              <div>
+                <strong>Quality answer</strong>
+                <small id="quality-answer-model">qwen3-4b</small>
+              </div>
+              <span class="mini-status" id="quality-answer-status">Loading</span>
+            </div>
+          </section>
+
+          <div class="privacy-note">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3 5 6v5c0 4.5 2.9 8.3 7 10 4.1-1.7 7-5.5 7-10V6z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <div>
+              <strong>Private by design</strong>
+              <span>No cloud API. No data leaves this device.</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="chat-panel">
+          <div class="chat-scroll" id="chat-scroll">
+            <section class="welcome" id="welcome-view">
+              <div class="welcome-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32">
+                  <path d="M7 7h13l5 5v13H7z" />
+                  <path d="M20 7v5h5M11 16h10M11 20h7" />
+                  <circle cx="24" cy="23" r="5" />
+                  <path d="m27.5 26.5 2.5 2.5" />
+                </svg>
+              </div>
+              <p class="welcome-kicker">Grounded document intelligence</p>
+              <h2>Ask your documents.<br />Nothing leaves your device.</h2>
+              <p class="welcome-copy">
+                Search the local knowledge base and receive concise answers with page-level source references.
+              </p>
+
+              <div class="suggestion-grid" aria-label="Suggested questions">
+                <button class="suggestion" type="button" data-question="What is chunk overlap?">
+                  <span class="suggestion-number">01</span>
+                  <span>What is chunk overlap?</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                </button>
+                <button class="suggestion" type="button" data-question="How do embeddings support retrieval?">
+                  <span class="suggestion-number">02</span>
+                  <span>How do embeddings support retrieval?</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                </button>
+                <button class="suggestion" type="button" data-question="Why use SQLite in a local RAG system?">
+                  <span class="suggestion-number">03</span>
+                  <span>Why use SQLite in a local RAG system?</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                </button>
+              </div>
+            </section>
+
+            <section class="messages" id="messages" aria-live="polite" aria-label="Conversation"></section>
+          </div>
+
+          <div class="composer-wrap">
+            <div class="composer-toolbar">
+              <span class="model-picker-label">Answer model</span>
+              <div class="model-picker" role="group" aria-label="Choose answer model">
+                <button class="model-option is-active" type="button" data-model="fast" aria-pressed="true">
+                  <span>Fast</span>
+                  <small>Qwen2.5 0.5B</small>
+                </button>
+                <button class="model-option" type="button" data-model="quality" aria-pressed="false">
+                  <span>Quality</span>
+                  <small>Qwen3 4B</small>
+                </button>
+              </div>
+            </div>
+            <form class="composer" id="question-form">
+              <label class="sr-only" for="question-input">Ask a question about the documents</label>
+              <textarea
+                id="question-input"
+                name="question"
+                rows="1"
+                maxlength="1000"
+                placeholder="Ask a question about your documents…"
+                autocomplete="off"
+                disabled
+              ></textarea>
+              <button class="send-button" id="send-button" type="submit" aria-label="Ask question" disabled>
+                <span>Ask</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 14-7-4 14-3-5z" />
+                  <path d="m12 14 7-9" />
+                </svg>
+              </button>
+            </form>
+            <p class="composer-note" id="composer-note">
+              Models are loading locally. The first start can take a moment.
+            </p>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <template id="user-message-template">
+      <article class="message user-message">
+        <div class="message-label">You</div>
+        <div class="message-bubble"><p></p></div>
+      </article>
+    </template>
+
+    <template id="loading-message-template">
+      <article class="message assistant-message loading-message">
+        <div class="assistant-avatar" aria-hidden="true">R</div>
+        <div class="message-content">
+          <div class="message-label">Local RAG</div>
+          <div class="thinking-card">
+            <div class="thinking-orbit" aria-hidden="true"><span></span></div>
+            <div>
+              <strong class="thinking-stage">Searching local documents</strong>
+              <span class="thinking-detail">Processing entirely on this device</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="assistant-message-template">
+      <article class="message assistant-message">
+        <div class="assistant-avatar" aria-hidden="true">R</div>
+        <div class="message-content">
+          <div class="message-heading-row">
+            <div class="message-label">Local RAG</div>
+            <button class="copy-button" type="button" aria-label="Copy answer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9h10v10H9z" /><path d="M5 15H4V5h10v1" /></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <div class="answer-card"><p class="answer-text"></p></div>
+          <div class="answer-meta"></div>
+          <details class="sources-panel">
+            <summary>
+              <span class="sources-summary-title">Retrieved sources</span>
+              <span class="sources-count"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <div class="source-list"></div>
+          </details>
+        </div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

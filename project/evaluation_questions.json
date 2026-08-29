@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "question": "What is Retrieval-Augmented Generation?",
+    "expected_document": "01_rag_fundamentals.pdf",
+    "answerable": true
+  },
+  {
+    "id": 2,
+    "question": "What happens after a user asks a question in a basic RAG pipeline?",
+    "expected_document": "01_rag_fundamentals.pdf",
+    "answerable": true
+  },
+  {
+    "id": 3,
+    "question": "What is an embedding?",
+    "expected_document": "02_embeddings_and_similarity.pdf",
+    "answerable": true
+  },
+  {
+    "id": 4,
+    "question": "Is cosine similarity a percentage of correctness?",
+    "expected_document": "02_embeddings_and_similarity.pdf",
+    "answerable": true
+  },
+  {
+    "id": 5,
+    "question": "Why is SQLite suitable for a small local RAG project?",
+    "expected_document": "03_sqlite_for_rag.pdf",
+    "answerable": true
+  },
+  {
+    "id": 6,
+    "question": "How can embedding vectors be stored in SQLite for a small project?",
+    "expected_document": "03_sqlite_for_rag.pdf",
+    "answerable": true
+  },
+  {
+    "id": 7,
+    "question": "What is chunk overlap?",
+    "expected_document": "04_chunking_and_overlap.pdf",
+    "answerable": true
+  },
+  {
+    "id": 8,
+    "question": "Why can chunk overlap be useful?",
+    "expected_document": "04_chunking_and_overlap.pdf",
+    "answerable": true
+  },
+  {
+    "id": 9,
+    "question": "What does grounding mean in a RAG system?",
+    "expected_document": "05_grounding_and_fallback.pdf",
+    "answerable": true
+  },
+  {
+    "id": 10,
+    "question": "What should the assistant do when the retrieved sources do not contain enough information?",
+    "expected_document": "05_grounding_and_fallback.pdf",
+    "answerable": true
+  },
+  {
+    "id": 11,
+    "question": "What is an advantage of running a RAG system locally and offline?",
+    "expected_document": "06_local_offline_rag.pdf",
+    "answerable": true
+  },
+  {
+    "id": 12,
+    "question": "Why can a local RAG system improve privacy?",
+    "expected_document": "06_local_offline_rag.pdf",
+    "answerable": true
+  },
+  {
+    "id": 13,
+    "question": "What is the capital of Japan?",
+    "expected_document": null,
+    "answerable": false
+  },
+  {
+    "id": 14,
+    "question": "Who invented the telephone?",
+    "expected_document": null,
+    "answerable": false
+  },
+  {
+    "id": 15,
+    "question": "How many moons does Mars have?",
+    "expected_document": null,
+    "answerable": false
+  }
+]
