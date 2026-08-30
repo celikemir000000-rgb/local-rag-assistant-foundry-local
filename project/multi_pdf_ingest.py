@@ -432,7 +432,9 @@ def save_to_sqlite(
         """,
         (
             pdf_file.name,
-            str(pdf_file),
+            pdf_file.relative_to(
+                ROOT_DIR
+            ).as_posix(),
             pdf_hash,
         ),
     )

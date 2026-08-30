@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep byte offsets and binary assets intact on every operating system.
+*.pdf binary
+*.png binary
+*.xlsx binary

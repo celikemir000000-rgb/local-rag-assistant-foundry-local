@@ -183,3 +183,24 @@ cython_debug/
 # Microsoft Foundry Local model files are downloaded per machine.
 # They are several gigabytes and must not be committed to GitHub.
 model_cache/
+
+# Local RAG data generated on each computer. Keeping these files out of Git
+# prevents private document text, embeddings, and machine-specific paths from
+# being published accidentally.
+documents/*.db
+documents/*.db-*
+documents/private/
+project/evaluation_results.csv
+
+# Local diagram draft exported from the viewer; README already has a clean diagram.
+RAG System Architecture Diagram.png
+
+# New PDFs are private by default. The six educational sample PDFs below are
+# intentionally included in this repository.
+documents/*.pdf
+!documents/01_rag_fundamentals.pdf
+!documents/02_embeddings_and_similarity.pdf
+!documents/03_sqlite_for_rag.pdf
+!documents/04_chunking_and_overlap.pdf
+!documents/05_grounding_and_fallback.pdf
+!documents/06_local_offline_rag.pdf

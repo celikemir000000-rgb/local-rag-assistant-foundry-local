@@ -29,6 +29,8 @@ source passages.
 | Higher-quality answers | `qwen3-4b` | Quality |
 
 The models are downloaded separately and are not stored in this repository.
+The initial dependency and model downloads require internet access; normal use
+can run offline after installation.
 
 ## Architecture
 
@@ -108,9 +110,20 @@ foundry model download qwen2.5-0.5b
 foundry model download qwen3-4b
 ```
 
+Build the local knowledge base before the first run:
+
+```powershell
+python multi_pdf_ingest.py
+```
+
+This creates `documents/rag_database.db` locally. The generated database is not
+stored in Git because it contains extracted document text, embeddings, and
+machine-specific local data.
+
 ## Run the application
 
-After installing the requirements and models, double-click:
+After installing the requirements, downloading the models, and building the
+knowledge base, double-click:
 
 ```text
 Start_Local_RAG_Web.bat
@@ -138,7 +151,7 @@ python multi_pdf_ingest.py
 
 ```text
 LocalRAG_Final/
-|-- documents/                  Sample PDFs and SQLite knowledge base
+|-- documents/                  Public sample PDFs; local SQLite DB is generated
 |-- project/
 |   |-- web/                    Offline HTML, CSS, and JavaScript interface
 |   |-- web_app.py              Local web server and RAG API
@@ -157,6 +170,10 @@ LocalRAG_Final/
 
 PDF processing, embeddings, retrieval, and language-model inference run on the
 local computer. No cloud API is required during normal use.
+
+New PDFs and generated SQLite databases are ignored by Git by default. The six
+included PDFs are intentionally public educational samples; private documents
+should never be force-added to the repository.
 
 ## Limitations
 
